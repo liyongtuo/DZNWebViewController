@@ -77,7 +77,14 @@ static char DZNWebViewControllerKVOContext = 0;
     self.hideBarsWithGestures = YES;
     self.allowHistory = YES;
     
-    self.webView = [[DZNWebView alloc] initWithFrame:self.view.bounds configuration:[WKWebViewConfiguration new]];
+    WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
+        
+    // 配置 JavaScript 控制台消息
+    WKUserContentController *userContentController = [[WKUserContentController alloc] init];
+    [userContentController addScriptMessageHandler:self name:@"COiOSHandler"];
+    config.userContentController = userContentController;
+    
+    self.webView = [[DZNWebView alloc] initWithFrame:self.view.bounds configuration:config];
     self.webView.backgroundColor = [UIColor whiteColor];
     self.webView.allowsBackForwardNavigationGestures = YES;
     self.webView.UIDelegate = self;
